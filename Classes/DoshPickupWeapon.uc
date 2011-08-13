@@ -1,6 +1,5 @@
 class DoshPickupWeapon extends CashPickup;
 
-var int damage;
 var class<DamageType> DoshDamType;
 var vector dummyHitLocation, dummyMomentum;
 
@@ -12,7 +11,7 @@ auto state Pickup {
         if ( ValidTouch(Other) ) {
             GiveCashTo(Pawn(Other));
         } else if (KFMonster(Other) != none) {
-            KFMonster(Other).TakeDamage(damage, KFHumanPawn(DroppedBy.Pawn), dummyHitLocation, dummyMomentum, DoshDamType);
+            KFMonster(Other).TakeDamage(class'DoshWeapon.DoshWeaponMut'.default.doshDamage, KFHumanPawn(DroppedBy.Pawn), dummyHitLocation, dummyMomentum, DoshDamType);
             SetRespawn();
         }
     }
@@ -27,13 +26,12 @@ state FallingPickup {
         if (ValidTouch(Other)) {
             GiveCashTo(Pawn(Other));
         } else if (KFMonster(Other) != none) {
-            KFMonster(Other).TakeDamage(damage, KFHumanPawn(DroppedBy.Pawn), dummyHitLocation, dummyMomentum, DoshDamType);
+            KFMonster(Other).TakeDamage(class'DoshWeapon.DoshWeaponMut'.default.doshDamage, KFHumanPawn(DroppedBy.Pawn), dummyHitLocation, dummyMomentum, DoshDamType);
             SetRespawn();
         }
     }
 }
 
 defaultproperties {
-    damage= 35
     DoshDamType= class'DoshWeapon.DamTypeDoshWeapon'
 }
