@@ -10,6 +10,14 @@ function PostBeginPlay() {
         return;
     }
 
+    /**
+     *  Overwrite the pawn with the beta pawn.  
+     *  See the class for details.
+     */
+    KF.PlayerControllerClass= class'DoshWeapon.DoshWeaponPlayerController';
+    KF.PlayerControllerClassName= "DoshWeapon.DoshWeaponPlayerController";
+
+
 }
 
 defaultproperties {
