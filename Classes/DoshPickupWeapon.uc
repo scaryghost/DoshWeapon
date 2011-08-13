@@ -1,4 +1,4 @@
-class CashPickupWeapon extends CashPickup;
+class DoshPickupWeapon extends CashPickup;
 
 var int damage;
 var class<DamageType> DoshDamType;
