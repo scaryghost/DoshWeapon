@@ -10,7 +10,8 @@ auto state Pickup {
     function Touch( actor Other ) {
         if ( ValidTouch(Other) ) {
             GiveCashTo(Pawn(Other));
-        } else if (KFMonster(Other) != none) {
+        } else if (KFMonster(Other) != none && KFMonster(Other).Health > 0) {
+            //Added second conditional to avoid ragdolls absorbing dosh
             KFMonster(Other).TakeDamage(class'DoshWeapon.DoshWeaponMut'.default.doshDamage, KFHumanPawn(DroppedBy.Pawn), dummyHitLocation, dummyMomentum, DoshDamType);
             SetRespawn();
         }
@@ -25,7 +26,7 @@ state FallingPickup {
     function Touch(actor Other) {
         if (ValidTouch(Other)) {
             GiveCashTo(Pawn(Other));
-        } else if (KFMonster(Other) != none) {
+        } else if (KFMonster(Other) != none && KFMonster(Other).Health > 0) {
             KFMonster(Other).TakeDamage(class'DoshWeapon.DoshWeaponMut'.default.doshDamage, KFHumanPawn(DroppedBy.Pawn), dummyHitLocation, dummyMomentum, DoshDamType);
             SetRespawn();
         }
