@@ -6,6 +6,8 @@ function PostBeginPlay() {
     local KFGameType KF;
 
     KF = KFGameType(Level.Game);
+    if (Level.NetMode != NM_Standalone)
+        AddToPackageMap("DoshWeapon");
 
     if (KF == none) {
         Destroy();
