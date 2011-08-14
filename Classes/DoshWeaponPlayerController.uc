@@ -1,4 +1,4 @@
-class DoshWeaponPlayerController extends KFPlayerController;
+class DoshWeaponPlayerController extends KFPCServ;
 
 function SetPawnClass(string inClass, string inCharacter) {
     PawnClass = Class'DoshWeapon.DoshWeaponHumanPawn';
