@@ -38,7 +38,7 @@ static event string GetDescriptionText(string property) {
 
 
 defaultproperties {
-    GroupName="KFDoshWeapon"
+    GroupName="KFDoshMut"
     FriendlyName="Dosh Weapon"
     Description="Deal damage to enemies with dosh!  Version 1.0.0"
     
