@@ -1,16 +1,12 @@
 class DoshWeaponMut extends Mutator;
 
 function PostBeginPlay() {
-    local KFGameType KF;
-
-    KF = KFGameType(Level.Game);
-    if (Level.NetMode != NM_Standalone)
-        AddToPackageMap("DoshWeapon");
-
-    if (KF == none) {
+    if (KFGameType(Level.Game) == none) {
         Destroy();
         return;
     }
+    if (Level.NetMode != NM_Standalone)
+        AddToPackageMap("DoshWeapon");
 }
 
 simulated function Tick(float DeltaTime) {
@@ -31,6 +27,7 @@ function Mutate(string MutateString, PlayerController Sender) {
     local array<string> parts;
     local int Amount;
 
+    Split(MutateString, " ", parts);
     if (parts[0] ~= "tosscash") {
         if (parts.Length == 1) {
             Amount= 50;
@@ -51,14 +48,13 @@ function Mutate(string MutateString, PlayerController Sender) {
                 Sender.Pawn.Location + 0.8 * Sender.Pawn.CollisionRadius * X - 0.5 * Sender.Pawn.CollisionRadius * Y);
     
             if(CashPickup != none) {
-                CashPickup.damage= Amount;
-                CashPickup.CashAmount = Amount;
-                CashPickup.bDroppedCash = true;
-                CashPickup.RespawnTime = 0;   // Dropped cash doesnt respawn. For obvious reasons.
-                CashPickup.Velocity = TossVel;
-                CashPickup.DroppedBy = Sender;
+                CashPickup.CashAmount= Amount;
+                CashPickup.bDroppedCash= true;
+                CashPickup.RespawnTime= 0;   // Dropped cash doesnt respawn. For obvious reasons.
+                CashPickup.Velocity= TossVel;
+                CashPickup.DroppedBy= Sender;
                 CashPickup.InitDroppedPickupFor(None);
-                Sender.PlayerReplicationInfo.Score -= Amount;
+                Sender.PlayerReplicationInfo.Score-= Amount;
     
                 if (Level.Game.NumPlayers > 1 && Level.TimeSeconds - KFPawn(Sender.Pawn).LastDropCashMessageTime > 
                         KFPawn(Sender.Pawn).DropCashMessageDelay ) {
@@ -66,6 +62,8 @@ function Mutate(string MutateString, PlayerController Sender) {
                 }
             }
         }
+    } else {
+        super.Mutate(MutateString, Sender);
     }
 }
     
