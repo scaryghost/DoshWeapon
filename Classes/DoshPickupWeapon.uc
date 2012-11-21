@@ -1,7 +1,7 @@
 class DoshPickupWeapon extends CashPickup;
 
 var class<DamageType> DoshDamType;
-var float dmgScale;
+var float damageScale;
 
 /** If an enemy touches dosh on the ground, hurt him too! */
 auto state Pickup {
@@ -11,7 +11,7 @@ auto state Pickup {
             GiveCashTo(Pawn(Other));
         } else if (KFMonster(Other) != none && KFMonster(Other).Health > 0) {
             //Added second conditional to avoid ragdolls absorbing dosh
-            KFMonster(Other).TakeDamage(CashAmount * dmgScale, KFHumanPawn(DroppedBy.Pawn), Location, Dummy, DoshDamType);
+            KFMonster(Other).TakeDamage(CashAmount * damageScale, KFHumanPawn(DroppedBy.Pawn), Location, Dummy, DoshDamType);
             SetRespawn();
         }
     }
@@ -27,13 +27,13 @@ state FallingPickup {
         if (ValidTouch(Other)) {
             GiveCashTo(Pawn(Other));
         } else if (KFMonster(Other) != none && KFMonster(Other).Health > 0) {
-            KFMonster(Other).TakeDamage(CashAmount * dmgScale, KFHumanPawn(DroppedBy.Pawn), Location, Dummy, DoshDamType);
+            KFMonster(Other).TakeDamage(CashAmount * damageScale, KFHumanPawn(DroppedBy.Pawn), Location, Dummy, DoshDamType);
             SetRespawn();
         }
     }
 }
 
 defaultproperties {
-    dmgScale= 5.0;
+    damageScale= 1.0;
     DoshDamType= class'DoshWeapon.DamTypeDoshWeapon'
 }

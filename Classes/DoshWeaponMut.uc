@@ -1,5 +1,7 @@
 class DoshWeaponMut extends Mutator;
 
+var() config float damageScale;
+
 function PostBeginPlay() {
     if (KFGameType(Level.Game) == none) {
         Destroy();
@@ -50,6 +52,7 @@ function Mutate(string MutateString, PlayerController Sender) {
                 kfPawn.Location + 0.8 * kfPawn.CollisionRadius * X - 0.5 * kfPawn.CollisionRadius * Y);
     
             if(CashPickup != none) {
+                CashPickup.damageScale= damageScale;
                 CashPickup.CashAmount= Amount;
                 CashPickup.bDroppedCash= true;
                 CashPickup.RespawnTime= 0;   // Dropped cash doesnt respawn. For obvious reasons.
@@ -68,10 +71,26 @@ function Mutate(string MutateString, PlayerController Sender) {
     }
 }
     
+static function FillPlayInfo(PlayInfo PlayInfo) {
+    Super.FillPlayInfo(PlayInfo);
+    PlayInfo.AddSetting("DoshWeapon", "damageScale", "Dosh Damage Scale", 0, 1, "Text");
+}
+
+static event string GetDescriptionText(string property) {
+    switch(property) {
+        case "damageScale":
+            return "How much damage £1 will do.";
+        default:
+            return Super.GetDescriptionText(property);
+    }
+}
+
 defaultproperties {
     GroupName="KFDoshMut"
     FriendlyName="Dosh Weapon v2.0"
     Description="Deal damage to enemies with dosh!  Version 2.0"
+
+    damageScale= 1.0
     
     RemoteRole= ROLE_SimulatedProxy
     bAlwaysRelevant= true
