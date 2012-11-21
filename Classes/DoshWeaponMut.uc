@@ -26,9 +26,11 @@ function Mutate(string MutateString, PlayerController Sender) {
     local Vector TossVel;
     local array<string> parts;
     local int Amount;
+    local KFPawn kfPawn;
 
+    kfPawn= KFPawn(Sender.Pawn);
     Split(MutateString, " ", parts);
-    if (parts[0] ~= "tosscash") {
+    if (kfPawn != none && parts[0] ~= "tosscash") {
         if (parts.Length == 1) {
             Amount= 50;
         } else {
@@ -39,13 +41,13 @@ function Mutate(string MutateString, PlayerController Sender) {
         Sender.PlayerReplicationInfo.Score= int(Sender.PlayerReplicationInfo.Score); // To fix issue with throwing 0 pounds.
         if (Sender.PlayerReplicationInfo.Score > 0 && Amount > 0) {
             Amount= Min(Amount,int(Sender.PlayerReplicationInfo.Score));
-            Sender.Pawn.GetAxes(Rotation,X,Y,Z);
+            kfPawn.GetAxes(Rotation,X,Y,Z);
     
-            TossVel= Vector(Sender.Pawn.GetViewRotation());
-            TossVel= TossVel * ((Sender.Pawn.Velocity Dot TossVel) + 500) + Vect(0,0,200);
+            TossVel= Vector(kfPawn.GetViewRotation());
+            TossVel= TossVel * ((kfPawn.Velocity Dot TossVel) + 500) + Vect(0,0,200);
     
             CashPickup= Spawn(class'DoshWeapon.DoshPickupWeapon',,, 
-                Sender.Pawn.Location + 0.8 * Sender.Pawn.CollisionRadius * X - 0.5 * Sender.Pawn.CollisionRadius * Y);
+                kfPawn.Location + 0.8 * kfPawn.CollisionRadius * X - 0.5 * kfPawn.CollisionRadius * Y);
     
             if(CashPickup != none) {
                 CashPickup.CashAmount= Amount;
@@ -56,8 +58,7 @@ function Mutate(string MutateString, PlayerController Sender) {
                 CashPickup.InitDroppedPickupFor(None);
                 Sender.PlayerReplicationInfo.Score-= Amount;
     
-                if (Level.Game.NumPlayers > 1 && Level.TimeSeconds - KFPawn(Sender.Pawn).LastDropCashMessageTime > 
-                        KFPawn(Sender.Pawn).DropCashMessageDelay ) {
+                if (Level.Game.NumPlayers > 1 && Level.TimeSeconds - kfPawn.LastDropCashMessageTime > kfPawn.DropCashMessageDelay ) {
                     Sender.Speech('AUTO', 4, "");
                 }
             }
