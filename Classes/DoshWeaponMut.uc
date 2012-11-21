@@ -69,7 +69,7 @@ function Mutate(string MutateString, PlayerController Sender) {
     
 defaultproperties {
     GroupName="KFDoshMut"
-    FriendlyName="Dosh Weapon"
+    FriendlyName="Dosh Weapon v2.0"
     Description="Deal damage to enemies with dosh!  Version 2.0"
     
     RemoteRole= ROLE_SimulatedProxy
