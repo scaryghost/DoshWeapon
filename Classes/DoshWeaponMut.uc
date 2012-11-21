@@ -15,6 +15,17 @@ function PostBeginPlay() {
     }
 }
 
+simulated function Tick(float DeltaTime) {
+    local PlayerController PC;
+
+    PC= Level.GetLocalPlayerController();
+    if (PC != none) {
+        PC.Player.InteractionMaster.AddInteraction("DoshWeapon.DWInteraction", PC.Player);
+    }
+    Disable('Tick');
+}
+ 
+
 function Mutate(string MutateString, PlayerController Sender) {
     local Vector X,Y,Z;
     local CashPickup CashPickup ;
@@ -72,4 +83,7 @@ defaultproperties {
     Description="Deal damage to enemies with dosh!  Version 1.0.1"
     
     doshDamage= 35
+
+    RemoteRole= ROLE_SimulatedProxy
+    bAlwaysRelevant= true
 }
